@@ -1,0 +1,14 @@
+.header-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    margin: 4vh 3vh 0 3vh;
+    align-items:first baseline;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: 'HafferMedium', sans-serif;
+    line-height: 1.3;
+}

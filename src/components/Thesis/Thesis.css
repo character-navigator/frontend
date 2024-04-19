@@ -1,0 +1,57 @@
+.copy {
+    font-family: 'HafferRegular', sans-serif;
+    font-size: 16px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.link{
+    font-family: 'HafferItalic', sans-serif;
+    color: blue;
+}
+
+.button-icon {
+    height: 1.1em; 
+    margin-left: 0.5em;
+  }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.button-thesis {
+    background-color: #cd95ff;
+    border: 1px solid #222222;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "HafferRegular";
+    font-size: 16px;
+    height: 40px;
+    margin-bottom: 10px;
+  
+    outline: none;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 55.1vw;
+  }
+  
+  .button-thesis:focus-visible {
+    box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+    transition: box-shadow .2s;
+  }
+  
+  .button-thesis:active {
+    background-color: black;
+    border-color: #000000;
+    color: white;
+    transform: scale(.96);
+  }

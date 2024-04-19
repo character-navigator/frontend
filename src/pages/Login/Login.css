@@ -1,0 +1,96 @@
+
+.background{
+    background-image: url("../../assets/arrows.svg");
+    background-color: #fff0dc;
+    background-repeat: repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;  
+}   
+
+.logo{
+    width: 68vw;
+}
+
+.copy {
+    font-family: 'HafferRegular', sans-serif;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.bolded{
+    font-family: 'HafferBold', sans-serif;
+}
+
+.opacity{
+    opacity: 30%;
+}
+
+.input {
+    box-sizing: border-box;
+    margin: 3px;
+    font-size: 14px;
+    height: 40px;
+    border-radius: 1px;
+    padding-left: 10px;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+    outline: 1px solid black;
+    width: 55vw;
+  }
+  
+.button-23 {
+  background-color: #000000;
+  border: 1px solid #222222;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "HafferRegular";
+  font-size: 14px;
+  height: 40px;
+
+  outline: none;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: 55.1vw;
+}
+
+.button-23:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.button-23:active {
+  background-color: black;
+  border-color: #000000;
+  color: white;
+  transform: scale(.96);
+}
+
+.button-23:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.error{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'HafferBold', sans-serif;
+  color: red;
+  width: 100%;
+  font-size: 12px;
+}
+
