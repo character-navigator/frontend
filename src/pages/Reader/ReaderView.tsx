@@ -24,14 +24,21 @@ export const ReaderView = () => {
     }
 
     const count = 8
+    const completedChunks = 4
     const barWidth = Math.floor(100 / count)
-    const bars = Array.from({ length: count }, (_, index) => index);
-    const barStyle = {  
-      backgroundColor: '#cd95ff',  
+    const completedPerentage = Math.floor(100 * (completedChunks / count))
+    const bars = Array.from({ length: count }, (_, index) => index)
+    const barStyle = {
+      backgroundColor: '#e3e3e3',
       height: '1.5vw',
       margin: '0 0.5vw',  
-      width: `${barWidth}%`, // Divide 100% by the number of divs to get equal width  
-    };  
+      width: `${barWidth}%`
+    }
+
+    const highlightedBarStyle = {  
+      ...barStyle,
+      backgroundColor: '#cd95ff'
+    }
 
     // useEffect(() => {
        
@@ -70,7 +77,7 @@ export const ReaderView = () => {
       if (rendition) {
         rendition.hooks.content.register((contents: any) => {
           const doc = contents.document;
-          doc.addEventListener("click", (e: React.MouseEvent) => {
+          doc.addEventListener("click", (e: MouseEvent) => {
             const characterElement: Element = doc.querySelector(".character");
             const targetElement = e.target as Element;
             const highlightedCharacter = "highlighted-character"
@@ -126,12 +133,12 @@ export const ReaderView = () => {
               <div style={{margin: '8vw 4vw 0 4vw'}}>
                 <div style={{ display: 'flex', width: '100%' }}>
                   {bars.map((_, index) => (  
-                    <div key={index} style={barStyle} /> // Render each div with the specified style  
+                    <div key={index} style={index < completedChunks ? highlightedBarStyle : barStyle} /> // Render each div with the specified style  
                   ))}
                 </div>
               </div>
               <div style={{width: '100%', textAlign: 'center', marginTop: '1vh'}}>
-                Summary based on {barWidth}%
+                Summary based on {completedPerentage}% of story
               </div>
             </div>
             
