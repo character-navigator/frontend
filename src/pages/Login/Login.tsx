@@ -3,6 +3,7 @@ import Footer from "../../components/Footer/FooterView"
 import { useState, useEffect } from "react"
 import './Login.css'
 import { useNavigate } from "react-router-dom"
+import axios from "../../config/api"
 
 function Login(){
 
@@ -12,27 +13,16 @@ function Login(){
     const navigate = useNavigate()
 
     function onSubmit(){
-        fetch("http://localhost:5025/authenticate",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({username, password})
-
-        }).then(response => {
-            response.json().then(result => {
-                if(result?.error === "Invalid_Credentials"){
-                    setError("Invalid credentials. Please try again.")
+        axios.post("authenticate", { username, password }).then(response => {
+            if(response.data?.error === "Invalid_Credentials") {
+                setError("Invalid credentials. Please try again.")
+            } else {
+                if(response.data?.token){
+                    setError("")
+                    navigate("/book-selector")
+                    localStorage.setItem("token", response.data.token)
                 }
-                else{
-                    
-                    localStorage.setItem("token", result?.token)
-                    if(result){
-                        setError("")
-                        navigate("/book-selector")
-                    }
-                }
-            })
+            }
         })
     }
 
