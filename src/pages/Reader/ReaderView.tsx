@@ -1,6 +1,4 @@
 import { MouseEventHandler } from 'react'
-import { useRecoilValue } from 'recoil';
-import { characterState } from './states';
 import Drawer from '@mui/material/Drawer';
 import { ReactReader } from 'react-reader'
 import type { Rendition } from 'epubjs'
@@ -18,6 +16,7 @@ export const ReaderView = ({
   location,
   openDrawer,
   openDialog,
+  character,
   percentUntilFirstSummary,
   setLocation,
   setRendition,
@@ -27,6 +26,7 @@ export const ReaderView = ({
   location: string | number
   openDrawer: boolean
   openDialog: boolean
+  character: string
   percentUntilFirstSummary: number
   setLocation: ReactSetter
   setRendition: ReactSetter
@@ -34,7 +34,7 @@ export const ReaderView = ({
   closeDialog: MouseEventHandler
 }) => {
 
-  const character = useRecoilValue(characterState)
+  
 
   return (
     <div className="wrapper" style={{ height: '100vh' }}>

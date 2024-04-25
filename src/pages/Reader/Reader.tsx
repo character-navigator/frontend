@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { characterState, summaryState, progressInfoState } from './states'
 import type { Contents, Rendition } from 'epubjs'
 import ReaderView from './ReaderView'
@@ -23,10 +23,10 @@ function Reader(){
     let sentencesOnPage: string[] = [];
 
     // For dialog
+    const [character, setCharacter] = useRecoilState(characterState)
     const [percentUntilFirstSummary, setPercentUntilFirstSummary] = useState(0)
 
-    // Recoil setters
-    const setCharacter = useSetRecoilState(characterState)
+    // Setters
     const setSummary = useSetRecoilState(summaryState)
     const setProgressInfo = useSetRecoilState(progressInfoState)
 
@@ -160,6 +160,7 @@ function Reader(){
               location={location}
               openDrawer={openDrawer}
               openDialog={openDialog}
+              character={character}
               percentUntilFirstSummary={percentUntilFirstSummary}
               setLocation={setLocation}
               setRendition={setRendition}
