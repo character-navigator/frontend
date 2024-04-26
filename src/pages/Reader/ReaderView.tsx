@@ -1,16 +1,16 @@
-import { MouseEventHandler } from 'react'
-import Drawer from '@mui/material/Drawer';
-import { ReactReader } from 'react-reader'
-import type { Rendition } from 'epubjs'
-import { Button } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import DrawerContent from './DrawerContent/DrawerContent';
-import { ReactSetter } from './types'
-import './Reader.css'
+import { MouseEventHandler } from "react";
+import Drawer from "@mui/material/Drawer";
+import { ReactReader } from "react-reader";
+import type { Rendition } from "epubjs";
+import { Button } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DrawerContent from "./DrawerContent/DrawerContent";
+import { ReactSetter } from "./types";
+import "./Reader.css";
 
 export const ReaderView = ({
   location,
@@ -21,32 +21,29 @@ export const ReaderView = ({
   setLocation,
   setRendition,
   closeDrawer,
-  closeDialog
+  closeDialog,
 }: {
-  location: string | number
-  openDrawer: boolean
-  openDialog: boolean
-  character: string
-  percentUntilFirstSummary: number
-  setLocation: ReactSetter
-  setRendition: ReactSetter
-  closeDrawer: MouseEventHandler
-  closeDialog: MouseEventHandler
+  location: string | number;
+  openDrawer: boolean;
+  openDialog: boolean;
+  character: string;
+  percentUntilFirstSummary: number;
+  setLocation: ReactSetter;
+  setRendition: ReactSetter;
+  closeDrawer: MouseEventHandler;
+  closeDialog: MouseEventHandler;
 }) => {
-
-  
-
   return (
-    <div className="wrapper" style={{ height: '100vh' }}>
+    <div className="wrapper" style={{ height: "100vh" }}>
       <ReactReader
-        url="http://localhost:5025/download-epub"
+        url="http://localhost:5025/api/download-epub"
         location={location}
         epubInitOptions={{
-          openAs: "epub"
+          openAs: "epub",
         }}
         locationChanged={(epubcfi: string) => setLocation(epubcfi)}
         getRendition={(_rendition: Rendition) => {
-          setRendition(_rendition)
+          setRendition(_rendition);
         }}
       />
       <Dialog
@@ -60,21 +57,20 @@ export const ReaderView = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            You must read at least {percentUntilFirstSummary}% to unlock the first summary of this character.
+            You must read at least {percentUntilFirstSummary}% to unlock the
+            first summary of this character.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog}>Close</Button>
         </DialogActions>
       </Dialog>
-      <Drawer
-        anchor="bottom"
-        open={openDrawer}
-        onClose={closeDrawer}>
+      <Drawer anchor="bottom" open={openDrawer} onClose={closeDrawer}>
         <DrawerContent closeDrawer={closeDrawer} />
       </Drawer>
     </div>
-  )
-}
+  );
+};
 
-export default ReaderView
+export default ReaderView;
+
