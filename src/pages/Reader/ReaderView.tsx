@@ -13,6 +13,7 @@ import { ReactSetter } from "./types";
 import "./Reader.css";
 
 export const ReaderView = ({
+  bookTitle,
   location,
   openDrawer,
   openDialog,
@@ -23,6 +24,7 @@ export const ReaderView = ({
   closeDrawer,
   closeDialog,
 }: {
+  bookTitle: string | undefined;
   location: string | number;
   openDrawer: boolean;
   openDialog: boolean;
@@ -36,7 +38,7 @@ export const ReaderView = ({
   return (
     <div className="wrapper" style={{ height: "100vh" }}>
       <ReactReader
-        url="http://localhost:5025/api/download-epub"
+        url={"http://localhost:5025/api/download-epub/" + bookTitle}
         location={location}
         epubInitOptions={{
           openAs: "epub",

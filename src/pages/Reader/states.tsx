@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 import { ProgressInfo } from "./types";
+import { CSSProperties } from "react";
 
 export const characterState = atom({
   key: "character",
@@ -24,7 +25,7 @@ export const summaryWithHighlightedCharacterState = selector({
   get: ({get}) => {
     const character = get(characterState)
     const summary = get(summaryState)
-    const summaryStyle = {margin: '1vh 2vh'}
+    const summaryStyle: CSSProperties = { margin: '1vh 2vh', overflowY: 'auto' }
     const characterIndex = summary.indexOf(character)
     const summaryWithoutCharacter = summary.substring(characterIndex + character.length)
 
