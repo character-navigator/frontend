@@ -11,7 +11,7 @@ function BookSelector(){
     
     return(
         
-        <div>
+        <div className="background-book-selector">
             <Header pageTitle="Book Selector"/>
             <CarouselProvider className="carousel-provider"
                 naturalSlideWidth={100}
