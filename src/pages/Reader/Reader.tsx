@@ -1,10 +1,11 @@
-import {useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { characterState, summaryState, progressInfoState } from './states'
 import type { Contents, Rendition } from 'epubjs'
 import ReaderView from './ReaderView'
 import { Sentence, Summary, ProgressAndSidInfo } from './types'
 import axios, { isUnsuccessfulResponse } from '../../config/api'
+import { useParams } from 'react-router-dom'
 
 function Reader(){
     // React-Reader states
@@ -19,7 +20,6 @@ function Reader(){
     const [sentencesMap, setSentencesMap] = useState<Sentence[]>([])
     const [sentenceOnPageAndInSentencesMap, setSentenceOnPageAndInSentencesMap] = useState<Sentence | undefined>({ sid: 1, text: "" })
     const sid = useRef<number | undefined>(sentenceOnPageAndInSentencesMap?.sid);
-    const bookName = "animal-farm"
     let sentencesOnPage: string[] = [];
 
     // For dialog
@@ -29,6 +29,9 @@ function Reader(){
     // Setters
     const setSummary = useSetRecoilState(summaryState)
     const setProgressInfo = useSetRecoilState(progressInfoState)
+
+    // Selected book
+    const { bookTitle } = useParams();
 
     // Functions
     function closeDialog() {
@@ -49,7 +52,7 @@ function Reader(){
 
     // Side effects
     useEffect(() => {
-      axios.get("sentences").then(response => {
+      axios.get("sentences/" + bookTitle).then(response => {
         if(response.status !== 200) {
           throw "Could not fetch sentences."
         } else {
@@ -119,35 +122,32 @@ function Reader(){
                   el.style['backgroundColor'] = el.style['backgroundColor'] == highlightColor ? '' : highlightColor
                 })
             } else {
-              if(targetElement.innerHTML === "Snowball" || targetElement.innerHTML === "Napoleon") {
-                axios.get(`progress-info/${bookName}/${targetElement.innerHTML}/${sid.current}`).then(response => {
-                  if(isUnsuccessfulResponse(response)) {
-                    throw "Could not fetch first sid" + response.status
+              axios.get(`progress-info/${bookTitle}/${targetElement.innerHTML}/${sid.current}`).then(response => {
+                if(isUnsuccessfulResponse(response)) {
+                  throw "Could not fetch first sid" + response.status
+                } else {
+                  const progressAndSidInfo: ProgressAndSidInfo = response.data
+                  
+                  if(sid.current && sid.current < progressAndSidInfo.sidOfFirstCharacterSummary) {
+                    setCharacter(targetElement.innerHTML)
+                    setPercentUntilFirstSummary(Math.floor(100 * (progressAndSidInfo.sidOfFirstCharacterSummary / progressAndSidInfo.totalSid)))
+                    setOpenDialog(true)
                   } else {
-                    const progressAndSidInfo: ProgressAndSidInfo = response.data
-                    
-                    if(sid.current && sid.current < progressAndSidInfo.sidOfFirstCharacterSummary) {
-                      setCharacter(targetElement.innerHTML)
-                      setPercentUntilFirstSummary(Math.floor(100 * (progressAndSidInfo.sidOfFirstCharacterSummary / progressAndSidInfo.totalSid)))
-                      setOpenDialog(true)
-                    } else {
-                      axios.get(`${bookName}/${targetElement.innerHTML}/${sid.current}`).then(response => {
-                        if(isUnsuccessfulResponse(response)) {
-                          throw "Could not fetch summary"
-                        } else {
-                          const partialSummary: Summary = response.data;
+                    axios.get(`${bookTitle}/${targetElement.innerHTML}/${sid.current}`).then(response => {
+                      if(isUnsuccessfulResponse(response)) {
+                        throw "Could not fetch summary"
+                      } else {
+                        const partialSummary: Summary = response.data;
 
-                          setProgressInfo({unlockedCharacterSummaries: progressAndSidInfo.unlockedCharacterSummaries, totalCharacterSummaries: progressAndSidInfo.totalCharacterSummaries})
-                          setSummary(partialSummary.summary)
-                          setCharacter(targetElement.innerHTML)
-                          setOpenDrawer(true)
-                        }
-                      })
-                    }
+                        setProgressInfo({unlockedCharacterSummaries: progressAndSidInfo.unlockedCharacterSummaries, totalCharacterSummaries: progressAndSidInfo.totalCharacterSummaries})
+                        setSummary(partialSummary.summary)
+                        setCharacter(targetElement.innerHTML)
+                        setOpenDrawer(true)
+                      }
+                    })
                   }
-                })
-                
-              }
+                }
+              })
             }
           });
         });
@@ -157,6 +157,7 @@ function Reader(){
     }, [rendition])
       
     return <ReaderView 
+              bookTitle={bookTitle}
               location={location}
               openDrawer={openDrawer}
               openDialog={openDialog}
