@@ -1,8 +1,4 @@
-.carousel-provider{
-    margin-top: 2.8vh;
-}
-
-.background-book-selector{
+.background-about{
     background-image: url("../../assets/arrows-lower-opac.svg");
     background-color: #ffffff;
     background-repeat: repeat;

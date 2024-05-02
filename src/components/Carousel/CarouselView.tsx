@@ -1,8 +1,8 @@
 import { Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
-import AnimalFarm from "../../assets/animal-farm-book-cover.jpg";
+import AnimalFarm from "../../assets/animal-farm.jpg";
+import Odyssey from "../../assets/odyssey.png";
 import ChristmasCarol from "../../assets/christmas-carol.png";
-import AliceInWonderland from "../../assets/alice-in-wonderland.png";
 import WarAndPeace from "../../assets/war-and-peace.png";
 import { Link, useParams } from "react-router-dom";
 
@@ -20,10 +20,9 @@ const books = [
     path: "war-and-peace"
   },
   {
-    title: "Alice in Wonderland",
-    author: "Lewis Carroll",
-    cover: AliceInWonderland,
-    path: "alice-in-wonderland"
+    title: "Odyssey",
+    author: "Homer",
+    cover: Odyssey,
   },
   {
     title: "A Christmas Carol",
