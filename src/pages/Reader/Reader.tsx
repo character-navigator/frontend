@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { characterState, progressInfoState, summariesState } from './states'
+import { characterState, progressInfoState, summariesState, selectedSummaryIndexState } from './states'
 import type { Contents, Rendition } from 'epubjs'
 import ReaderView from './ReaderView'
-import { Sentence, Summary, ProgressAndSidInfo } from './types'
+import { Sentence, Summary, ProgressAndSidInfo, ProgressInfo } from './types'
 import axios, { isUnsuccessfulResponse } from '../../config/api'
 import { useParams } from 'react-router-dom'
 
@@ -13,8 +13,8 @@ function Reader(){
     const [rendition, setRendition] = useState<Rendition | undefined>(undefined)
 
     // Modal states
-    const [openDrawer, setOpenDrawer] = useState(false)
-    const [openDialog, setOpenDialog] = useState(false)
+    const [drawerIsVisible, setDrawerIsVisible] = useState(false)
+    const [dialogIsVisible, setDialogIsVisible] = useState(false)
 
     // Helpers
     const [sentencesMap, setSentencesMap] = useState<Sentence[]>([])
@@ -25,21 +25,27 @@ function Reader(){
     // For dialog
     const [character, setCharacter] = useRecoilState(characterState)
     const [percentUntilFirstSummary, setPercentUntilFirstSummary] = useState(0)
+    const acknowledgedSpoilers = useRef(false)
 
     // Setters
     const setSummaries = useSetRecoilState(summariesState)
-    const setProgressInfo = useSetRecoilState(progressInfoState)
+    const [progressInfo, setProgressInfo] = useRecoilState(progressInfoState)
+    const setSelectedSummaryIndex = useSetRecoilState(selectedSummaryIndexState)
 
     // Selected book
     const { bookTitle } = useParams();
 
     // Functions
+    function openDrawer() {
+      setDrawerIsVisible(true)
+    }
+
     function closeDialog() {
-      setOpenDialog(false)
+      setDialogIsVisible(false)
     }
 
     function closeDrawer() {
-      setOpenDrawer(false)
+      setDrawerIsVisible(false)
     }
 
     function splitIntoSentences(text: string) {  
@@ -48,6 +54,20 @@ function Reader(){
 
     function cleanUpSentence(text: string) {  
       return text.trim().replace(/\s+/g, ' ').replace(/\s+([.!?])/g, '$1')
+    }
+
+    function getAndSetSummaries(character: string, progressInfo: ProgressInfo) {
+      axios.get(`get-summaries/${bookTitle}/${character}/${sid.current}`).then(response => {
+        if(isUnsuccessfulResponse(response)) {
+          throw "Could not fetch summary"
+        } else {
+          const unlockedCharacterSummaries = progressInfo.unlockedCharacterSummaries;
+          setProgressInfo({ unlockedCharacterSummaries, totalCharacterSummaries: progressInfo.totalCharacterSummaries })
+          setSelectedSummaryIndex( unlockedCharacterSummaries === 0 ? 0 : unlockedCharacterSummaries - 1)
+          setSummaries(response.data)
+          setDrawerIsVisible(true)
+        }
+      })
     }
 
     // Side effects
@@ -127,22 +147,13 @@ function Reader(){
                   throw "Could not fetch first sid" + response.status
                 } else {
                   const progressAndSidInfo: ProgressAndSidInfo = response.data
-                  
-                  if(sid.current && sid.current < progressAndSidInfo.sidOfFirstCharacterSummary) {
-                    setCharacter(targetElement.innerHTML)
+                  setCharacter(targetElement.innerHTML)
+                  setProgressInfo({ unlockedCharacterSummaries: progressAndSidInfo.unlockedCharacterSummaries, totalCharacterSummaries: progressAndSidInfo.totalCharacterSummaries })
+                  if((sid.current && sid.current < progressAndSidInfo.sidOfFirstCharacterSummary) && !acknowledgedSpoilers.current) {
                     setPercentUntilFirstSummary(Math.floor(100 * (progressAndSidInfo.sidOfFirstCharacterSummary / progressAndSidInfo.totalSid)))
-                    setOpenDialog(true)
+                    setDialogIsVisible(true)
                   } else {
-                    axios.get(`get-summaries/${bookTitle}/${targetElement.innerHTML}/${sid.current}`).then(response => {
-                      if(isUnsuccessfulResponse(response)) {
-                        throw "Could not fetch summary"
-                      } else {
-                        setProgressInfo({unlockedCharacterSummaries: progressAndSidInfo.unlockedCharacterSummaries, totalCharacterSummaries: progressAndSidInfo.totalCharacterSummaries})
-                        setSummaries(response.data)
-                        setCharacter(targetElement.innerHTML)
-                        setOpenDrawer(true)
-                      }
-                    })
+                    getAndSetSummaries(targetElement.innerHTML, progressAndSidInfo)
                   }
                 }
               })
@@ -157,14 +168,17 @@ function Reader(){
     return <ReaderView 
               bookTitle={bookTitle}
               location={location}
-              openDrawer={openDrawer}
-              openDialog={openDialog}
+              drawerIsVisible={drawerIsVisible}
+              dialogIsVisible={dialogIsVisible}
+              acknowledgedSpoilers={acknowledgedSpoilers}
               character={character}
+              progressInfo={progressInfo}
               percentUntilFirstSummary={percentUntilFirstSummary}
               setLocation={setLocation}
               setRendition={setRendition}
               closeDrawer={closeDrawer}
               closeDialog={closeDialog}
+              getAndSetSummaries={getAndSetSummaries}
             />
 }
 

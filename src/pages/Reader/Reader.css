@@ -6,6 +6,21 @@
     padding: 3vh;
 }
 
+#alert-dialog-title {
+    text-align: center;
+}
+
+.dialog-button {
+    background-color: #cd95ff;
+    width: 50%;
+    border: 1px solid black;
+    margin: 0;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .bar {
     background-color: #e3e3e3;
 }
@@ -20,8 +35,4 @@
     color: #cd95ff;
     font-family: 'HafferItalic', sans-serif;
     font-weight: bold;
-}
-
-.arrow{
-    background-color: red !important;
 }

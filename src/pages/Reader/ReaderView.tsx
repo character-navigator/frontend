@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, MutableRefObject } from "react";
 import Drawer from "@mui/material/Drawer";
 import { ReactReader, ReactReaderStyle, IReactReaderStyle } from "react-reader";
 import type { Rendition } from "epubjs";
@@ -9,7 +9,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DrawerContent from "./DrawerContent/DrawerContent";
-import { ReactSetter } from "./types";
+import { ProgressInfo, ReactSetter } from "./types";
 import { RxCross1 } from "react-icons/rx";
 import { useLocation, Link } from 'react-router-dom';
 import "./Reader.css";
@@ -27,7 +27,7 @@ const myReaderTheme: IReactReaderStyle = {
   },
   tocButtonBar: {
     ...ReactReaderStyle.tocButtonBar,
-    scale: "100%",
+    scale: "80%",
     background: "black"
   },
   tocArea: {
@@ -41,35 +41,61 @@ const myReaderTheme: IReactReaderStyle = {
 export const ReaderView = ({
   bookTitle,
   location,
-  openDrawer,
-  openDialog,
+  drawerIsVisible,
+  dialogIsVisible,
+  acknowledgedSpoilers,
   character,
+  progressInfo,
   percentUntilFirstSummary,
   setLocation,
   setRendition,
   closeDrawer,
   closeDialog,
+  getAndSetSummaries
 }: {
   bookTitle: string | undefined;
   location: string | number;
-  openDrawer: boolean;
-  openDialog: boolean;
+  drawerIsVisible: boolean;
+  dialogIsVisible: boolean;
+  acknowledgedSpoilers: MutableRefObject<boolean>;
   character: string;
+  progressInfo: ProgressInfo;
   percentUntilFirstSummary: number;
   setLocation: ReactSetter;
   setRendition: ReactSetter;
   closeDrawer: MouseEventHandler;
   closeDialog: MouseEventHandler;
+  getAndSetSummaries: Function;
 }) => {
   
-  const backLocation = useLocation();
+  const backLocation = useLocation()
+  const dialogButtonStyle = {
+    backgroundColor: '#cd95ff',
+    width: '50%',
+    border:
+    '1px solid black',
+    margin: 0,
+    height: '5vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'hafferBold'
+}
+
   function getBackPath(){
     return backLocation.pathname === '/' + {bookTitle} ? backLocation.pathname : '/book-selector';
   }
+
+  function acknowledgeSpoilers(e: any) {
+    getAndSetSummaries(character, progressInfo)
+    acknowledgedSpoilers.current = true
+    closeDialog(e)
+  }
+
   return (
     <div className="wrapper" style={{ height: "100vh" }}>
       <Link to={getBackPath()}>
-      <RxCross1 style={{ position: "absolute", top: "1.7vh", right: "1.7vh", zIndex: 9999, fontSize: "1.45em", color:"black" }}/>
+        <RxCross1 style={{ position: "absolute", top: "1.7vh", right: "1.7vh", zIndex: 9999, fontSize: "1.23em", color:"black" }}/>
       </Link>
       <ReactReader
         url={"http://localhost:5025/api/download-epub/" + bookTitle}
@@ -85,25 +111,30 @@ export const ReaderView = ({
       />
       
       <Dialog
-        open={openDialog}
+        open={dialogIsVisible}
         onClose={closeDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {character}: Summary Not Unlocked
+          Spoiler Warning!
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            You must read at least {percentUntilFirstSummary}% to unlock the
-            first summary of this character.
+            The first summary of {character} is based on <span style={{color: '#cd95ff'}}>{percentUntilFirstSummary}%</span> of the book and might contain spoilers.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog}>Close</Button>
+        <DialogActions sx={{padding: 0, justifyContent: 'space-evenly'}}>
+          
+        <div style={dialogButtonStyle} onClick={acknowledgeSpoilers}>
+          Show
+        </div>
+        <div style={dialogButtonStyle} onClick={closeDialog}>
+          Close
+        </div>
         </DialogActions>
       </Dialog>
-      <Drawer anchor="bottom" open={openDrawer} onClose={closeDrawer}>
+      <Drawer anchor="bottom" open={drawerIsVisible} onClose={closeDrawer}>
         <DrawerContent closeDrawer={closeDrawer} />
       </Drawer>
     </div>

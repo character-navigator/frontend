@@ -1,6 +1,6 @@
-import { CSSProperties, MouseEventHandler, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react"
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
-import { summariesState, selectedSummaryIndexState } from "../states"
+import { MouseEventHandler, ReactElement, useEffect, useMemo, useRef, useState } from "react"
+import { useRecoilState } from "recoil"
+import { selectedSummaryIndexState } from "../states"
 import { ProgressInfo } from "../types"
 import CharacterNavigatorIcon from '../../../assets/character_navigator_icon.png'
 
@@ -35,7 +35,7 @@ const DrawerContentView = ({
     opacity: '50%'
   }
 
-  function viewSummary(index: number) {
+  function viewNthSummary(index: number) {
     if(index < progressInfo.unlockedCharacterSummaries) {
       setSelectedSummaryIndex(index)
     }
@@ -49,51 +49,35 @@ const DrawerContentView = ({
     transition: 'all 0.5s ease-out',  
     maxHeight: maxHeight,
     minHeight: minHeight,
-    overflow: 'hidden',  
   };  
 
   useEffect(() => { 
     const summaryEl = document.getElementById("character-summary")
 
-    if (contentRef.current && summaryEl) { 
-      const summaryHeight = summaryEl.offsetHeight;
+    if (contentRef.current && summaryEl) {
+      const summaryHeight = summaryEl.offsetHeight
       const lineHeight = parseInt(summaryEl.style.lineHeight)
-      const lines = summaryHeight / lineHeight
+      const lineCount = summaryHeight / lineHeight
+      const lineCountForOverflow = 9
+      const amplifier = 2.5
 
-      if(lines <= 9) {
-        setMaxHeight(lines * 2.5 + "vh")
-        setMinHeight(lines * 2.5 + "vh")
+      if(lineCount <= lineCountForOverflow) {
+        setMaxHeight(lineCount * amplifier + "vh")
+        setMinHeight(lineCount * amplifier + "vh")
       } else {
-        setMaxHeight(9 * 2.5 + "vh")
-        setMinHeight(9 * 2.5 + "vh")
+        setMaxHeight(lineCountForOverflow * amplifier + "vh")
+        setMinHeight(lineCountForOverflow * amplifier + "vh")
       }
-
-      // console.log("scrollHeight: " + contentRef.current!.scrollHeight + " < maxHeight: " + maxHeight.substring(0, maxHeight.length - 2) + " = " + (contentRef.current!.scrollHeight < Number(maxHeight.substring(0, maxHeight.length - 2)))) 
-      // if(contentRef.current!.scrollHeight <= Number(maxHeight.substring(0, maxHeight.length - 2))) {
-      //   console.log("test")
-      //   setMaxHeight(`5vh`);  
-      // } else {
-      //   console.log("test2")
-      //   setMaxHeight(`${contentRef.current!.scrollHeight}px`);  
-      //   setMinHeight(`${contentRef.current!.scrollHeight}px`);
-      //   setTimeout(() => setMinHeight(`15vh`), 200)
-      //   setTimeout(() => setMinHeight(`15vh`), 200)
-      // }
-      
     }  
-  }, [summaryWithHighlightedCharacter]); // This effect runs when `text` changes  
-
-  useEffect(() => {
-    setSelectedSummaryIndex(progressInfo.unlockedCharacterSummaries - 1);
-  }, [])
+  }, [summaryWithHighlightedCharacter]);
 
   return(
     <div className='character-navigator-copy'>
-      <span onClick={closeDrawer} style={{fontSize: '4vw', display: 'flex', justifyContent: 'flex-end'}}>
+      <span onClick={closeDrawer} style={{fontSize: '5vw', display: 'flex', justifyContent: 'flex-end'}}>
         &#10005;
       </span>
       <p style={{fontWeight: 'bold', marginTop: 0}}><img style={{height: '1.35vh', marginLeft: '4.3vw'}} src={CharacterNavigatorIcon}/>&nbsp; Character Navigator</p>
-      <div ref={contentRef} style={transitionStyle} className="smooth-transition">
+      <div ref={contentRef} style={transitionStyle}>
         {summaryWithHighlightedCharacter}
       </div>
       <div style={{margin: '8vw 4vw 0 4vw'}}>
@@ -102,11 +86,11 @@ const DrawerContentView = ({
             <div 
               key={index}
               style={
-                index < progressInfo.unlockedCharacterSummaries ? 
-                index !== selectedSummaryIndex? 
+                index < progressInfo.unlockedCharacterSummaries || (index === 0 && progressInfo.unlockedCharacterSummaries === 0) ? 
+                index !== selectedSummaryIndex ? 
                 transparentHighlighedBarStyle : highlightedBarStyle : barStyle
               } 
-              onMouseOver={() => viewSummary(index)}
+              onMouseOver={() => viewNthSummary(index)}
             />
           ))}
         </div>
