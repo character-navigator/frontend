@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { characterState, summaryState, progressInfoState } from './states'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { characterState, progressInfoState, summariesState } from './states'
 import type { Contents, Rendition } from 'epubjs'
 import ReaderView from './ReaderView'
 import { Sentence, Summary, ProgressAndSidInfo } from './types'
@@ -27,7 +27,7 @@ function Reader(){
     const [percentUntilFirstSummary, setPercentUntilFirstSummary] = useState(0)
 
     // Setters
-    const setSummary = useSetRecoilState(summaryState)
+    const setSummaries = useSetRecoilState(summariesState)
     const setProgressInfo = useSetRecoilState(progressInfoState)
 
     // Selected book
@@ -133,14 +133,12 @@ function Reader(){
                     setPercentUntilFirstSummary(Math.floor(100 * (progressAndSidInfo.sidOfFirstCharacterSummary / progressAndSidInfo.totalSid)))
                     setOpenDialog(true)
                   } else {
-                    axios.get(`${bookTitle}/${targetElement.innerHTML}/${sid.current}`).then(response => {
+                    axios.get(`get-summaries/${bookTitle}/${targetElement.innerHTML}/${sid.current}`).then(response => {
                       if(isUnsuccessfulResponse(response)) {
                         throw "Could not fetch summary"
                       } else {
-                        const partialSummary: Summary = response.data;
-
                         setProgressInfo({unlockedCharacterSummaries: progressAndSidInfo.unlockedCharacterSummaries, totalCharacterSummaries: progressAndSidInfo.totalCharacterSummaries})
-                        setSummary(partialSummary.summary)
+                        setSummaries(response.data)
                         setCharacter(targetElement.innerHTML)
                         setOpenDrawer(true)
                       }

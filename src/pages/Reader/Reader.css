@@ -3,7 +3,7 @@
     font-size: 15px;
     line-height: 1.3;
     text-align: left;
-    padding: 3vh
+    padding: 3vh;
 }
 
 .bar {
@@ -19,4 +19,5 @@
 .character-name {
     color: #cd95ff;
     font-family: 'HafferItalic', sans-serif;
+    font-weight: bold;
 }

@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { useRecoilValue } from "recoil"
-import { progressInfoState, summaryWithHighlightedCharacterState } from "../states"
+import { progressInfoState, summaryWithHighlightedCharacterState, selectedSummaryIndexState } from "../states"
 import DrawerContentView from "./DrawerContentView"
 
 const DrawerContent = ({
@@ -8,9 +8,11 @@ const DrawerContent = ({
 }: {
   closeDrawer: any
 }) => {
+  const completed = useRecoilValue(selectedSummaryIndexState) + 1
+  
   const progressInfo = useRecoilValue(progressInfoState)
-  const completedPercentage = useMemo(() => Math.floor(100 * (progressInfo.unlockedCharacterSummaries / progressInfo.totalCharacterSummaries)), [progressInfo])
   const summaryWithHighlightedCharacter = useRecoilValue(summaryWithHighlightedCharacterState)
+  const completedPercentage = useMemo(() => Math.floor(100 * (completed / progressInfo.totalCharacterSummaries)), [completed])
 
   return <DrawerContentView 
             closeDrawer={closeDrawer}
