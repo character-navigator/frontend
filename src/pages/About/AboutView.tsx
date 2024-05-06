@@ -36,7 +36,7 @@ function AboutView(){
             <div className="lightbox" onClick={() => setIsImageOpen(false)}>
             <img className="lightbox-image" src={HierarchicalMerging} />
             </div>
-        )}
+        )}<br/>
         
         <HiArrowSmallRight size={19} style={{ marginBottom: '-5.5px' }}/>Employing hierarchical merging to condense the subsummaries corresponding to the user's
         current reading progress into a cohesive summary and thereby avoiding spoilers.<br/><br/>
@@ -49,7 +49,7 @@ function AboutView(){
             <div className="lightbox" onClick={() => setIsSecondImageOpen(false)}>
             <img className="lightbox-image" src={CharacterExtraction} />
             </div>
-        )}
+        )}<br/>
         
 
         <HiArrowSmallRight size={19} style={{ marginBottom: '-5.5px' }}/>When a user is reading an E-book in the user interface (implemented in React) and

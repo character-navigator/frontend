@@ -20,3 +20,7 @@
     color: #cd95ff;
     font-family: 'HafferItalic', sans-serif;
 }
+
+.arrow{
+    background-color: red !important;
+}
