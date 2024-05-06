@@ -21,3 +21,7 @@
     font-family: 'HafferItalic', sans-serif;
     font-weight: bold;
 }
+
+.arrow{
+    background-color: red !important;
+}

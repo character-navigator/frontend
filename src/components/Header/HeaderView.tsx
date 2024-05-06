@@ -15,7 +15,7 @@ function HeaderView({pageTitle}:{pageTitle: string}){
         <div className="header">
             <div>
                 <Link to={getBackPath()}>
-                <HiArrowUturnLeft size={20} style={{position: 'absolute', top: '5.7vh'}}/>
+                <HiArrowUturnLeft size={20} color="black" style={{position: 'absolute', top: '5.7vh'}}/>
                 </Link>
             </div>
             <div style={{textAlign: 'center'}}>
