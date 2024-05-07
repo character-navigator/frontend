@@ -7,7 +7,15 @@
 }
 
 #alert-dialog-title {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#alert-dialog-description {
+    font-size: 14px;
+    color: black;
+    font-family: 'HafferRegular', sans-serif;
 }
 
 .dialog-button {

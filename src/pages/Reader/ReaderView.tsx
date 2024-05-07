@@ -70,10 +70,8 @@ export const ReaderView = ({
   
   const backLocation = useLocation()
   const dialogButtonStyle = {
-    backgroundColor: '#cd95ff',
     width: '50%',
-    border:
-    '1px solid black',
+    boxShadow: '0 -0.3px 0 0.3px black',
     margin: 0,
     height: '5vh',
     display: 'flex',
@@ -117,11 +115,14 @@ export const ReaderView = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Spoiler Warning!
+          <span style={{fontSize: '14px', fontFamily: "'HafferBold', sans-serif"}}>Spoiler Warning!</span>
+          <span onClick={closeDialog} style={{fontSize: '5vw'}}>
+            &#10005;
+          </span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            The first summary of {character} is based on <span style={{color: '#cd95ff'}}>{percentUntilFirstSummary}%</span> of the book and might contain spoilers.
+            The first summary of {character} is based on <span style={{color: '#cd95ff', fontFamily: "'HafferMedium', sans-serif"}}>{percentUntilFirstSummary}%</span> of the book and might contain spoilers.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{padding: 0, justifyContent: 'space-evenly'}}>
