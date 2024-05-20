@@ -91,9 +91,10 @@ function Reader(){
             
             if (start && end) {
               function updateSentencesOnPage() {
-                const splitCfi = start.cfi.split('/')
-                const baseCfi = splitCfi[0] + '/' + splitCfi[1] + '/' + splitCfi[2] + '/' + splitCfi[3]
-                const startCfi = start.cfi.replace(baseCfi, '')
+                const splittedCfi = start.cfi.split('/')
+                const baseCfi = splittedCfi[0] + '/' + splittedCfi[1] + '/' + splittedCfi[2] + '/' + splittedCfi[3]
+                const startCfiTemp = start.cfi.replace(baseCfi, '')
+                const startCfi = startCfiTemp.substring(0, startCfiTemp.length - 1)
                 const endCfi = end.cfi.replace(baseCfi, '')
                 const rangeCfi = [baseCfi, startCfi, endCfi].join(',')
                 const pageContent = rendition!.getRange(rangeCfi).toString()

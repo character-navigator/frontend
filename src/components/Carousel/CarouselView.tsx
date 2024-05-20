@@ -23,6 +23,7 @@ const books = [
     title: "Odyssey",
     author: "Homer",
     cover: Odyssey,
+    path: "the-odyssey"
   },
   {
     title: "A Christmas Carol",
