@@ -2,6 +2,14 @@
 
 The Frontend repository is created to demonstrate the project work. It is written in TypeScript using React.
 
+## Note
+
+The frontend application is not optimized for wide formats. To ensure proper display, please follow these steps:
+
+1. Open your browser.
+2. Enable developer mode by pressing `F12`.
+3. Set the device dimensions to "iPhone 14 Pro Max".
+
 ## Libraries Used
 
 The project utilizes the following npm libraries:
