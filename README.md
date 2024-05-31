@@ -1,4 +1,4 @@
-# Frontend
+# Front-end
 
 The Frontend repository is created to demonstrate the project work. It is written in TypeScript using React.
 
