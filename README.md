@@ -12,7 +12,7 @@ The project utilizes the following npm libraries:
 - [Material UI Components](https://mui.com/material-ui/all-components/)
 
 ## Project Setup
-Ensure all commands are executed from the project root.
+To run the project, the backend repository needs to be up and running, see the link here on how to initilaize the backend program.
 
 1. **Install Dependencies**: Use `npm` to install the required packages.
     ```bash
