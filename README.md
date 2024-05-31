@@ -1,15 +1,15 @@
-# ML-Service
+# Frontend
 
-ML-Service is a repository created for the purpose of extracting and summarizing characters from .epub files. It includes two additional programs:
+The Frontend repository is created to demonstrate the project work. It is written in TypeScript using React.
 
-- **Span Insertion**: This program is designed to enclose character names with HTML spans inside .epub files, enabling character names to be highlighted in the front-end prototype.
+## Libraries Used
 
-- **Evaluation Program**: The Evaluation Program allows for the manual insertion of a reference and a candidate string. This facilitates the evaluation of the summary using BERTScore metrics such as F1, Recall, and Precision.
+The project utilizes the following npm libraries:
 
-## Note
-
-- In the `character_extraction.ipynb` notebook, the name of the books are hardcoded and need to be adjusted accordingly.
-- In the `character_summarization.ipynb` notebook, the name of the books are hardcoded and need to be adjusted. Additionally, when summarizing a range of characters, the range has to be manually inserted in the extract chunks section.
+- [React Responsive Carousel](https://www.npmjs.com/package/react-responsive-carousel)
+- [React Reader](https://www.npmjs.com/package/react-reader)
+- [Material Icons](https://mui.com/material-ui/material-icons/)
+- [Material UI Components](https://mui.com/material-ui/all-components/)
 
 ## Project Setup
 Ensure all commands are executed from the project root.
