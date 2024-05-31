@@ -115,7 +115,7 @@ export const ReaderView = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          <span style={{fontSize: '14px', fontFamily: "'HafferBold', sans-serif"}}>Spoiler Warning!</span>
+          <span style={{fontSize: '16px', fontFamily: "'HafferBold', sans-serif"}}>Spoiler Warning!</span>
           <span onClick={closeDialog} style={{fontSize: '5vw'}}>
             &#10005;
           </span>

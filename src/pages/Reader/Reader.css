@@ -1,6 +1,6 @@
 .character-navigator-copy {
     font-family: 'HafferRegular', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.3;
     text-align: left;
     padding: 3vh;
@@ -13,7 +13,7 @@
 }
 
 #alert-dialog-description {
-    font-size: 14px;
+    font-size: 16px;
     color: black;
     font-family: 'HafferRegular', sans-serif;
 }

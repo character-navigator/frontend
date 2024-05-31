@@ -35,9 +35,13 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
+    <div className="app-wrapper">
+    <div className="app-content">
     <RecoilRoot>
       <RouterProvider router={router}/>
     </RecoilRoot>
+    </div>
+    </div>
   </React.StrictMode>
 );
 
